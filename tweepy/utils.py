@@ -39,16 +39,19 @@ def convert_to_utf8_str(arg):
 
 def import_simplejson():
     try:
-        import simplejson as json
+        import ujson as json
     except ImportError:
         try:
-            import json  # Python 2.6+
+            import simplejson as json
         except ImportError:
             try:
-                # Google App Engine
-                from django.utils import simplejson as json
+                import json  # Python 2.6+
             except ImportError:
-                raise ImportError("Can't load a json library")
+                try:
+                    # Google App Engine
+                    from django.utils import simplejson as json
+                except ImportError:
+                    raise ImportError("Can't load a json library")
 
     return json
 
